@@ -1,10 +1,20 @@
 const express = require("express");
 const router = express.Router();
 
-const { register, login } = require("../controllers/authController");
+const {
+  registerEducation,
+  registerIndustry,
+  registerPersonal,
+  login
+} = require("../controllers/authController");
 
-router.post("/register", register);
+// SIGN UP ROUTES
+// Changed from "/register/education" to "/register-education" to match Frontend
+router.post("/register-education", registerEducation);
+router.post("/register-industry", registerIndustry);
+router.post("/register-personal", registerPersonal);
+
+// LOGIN
 router.post("/login", login);
 
 module.exports = router;
-

@@ -2,10 +2,14 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// REGISTER
-exports.register = async (req, res) => {
+// COMMON FUNCTION
+const createUser = async (req, res, accountType) => {
   try {
     const { username, email, password } = req.body;
+
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
 
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -17,16 +21,35 @@ exports.register = async (req, res) => {
     await User.create({
       username,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      accountType
     });
 
-    res.status(201).json({ message: "User registered successfully" });
+    res.status(201).json({
+      message: `${accountType} account created successfully`
+    });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// LOGIN
+// EDUCATION SIGN UP
+exports.registerEducation = (req, res) => {
+  createUser(req, res, "EDUCATION");
+};
+
+// INDUSTRY SIGN UP
+exports.registerIndustry = (req, res) => {
+  createUser(req, res, "INDUSTRY");
+};
+
+// PERSONAL SIGN UP
+exports.registerPersonal = (req, res) => {
+  createUser(req, res, "PERSONAL");
+};
+
+// LOGIN (unchanged)
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -48,6 +71,7 @@ exports.login = async (req, res) => {
     );
 
     res.json({ token });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Added Import
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "../Style/Home.css";
 
+import studentsImg from "../assets/feature1.png";
+import teachersImg from "../assets/feature2.png";
+import teamsImg from "../assets/feature3.png";
+
 // Import the WorkNest Logo for light mode
 import logoLight from "../assets/Logo.png"; 
-// Import the WorkNest Logo for dark mode (assuming you have it based on previous context)
-// If you don't have Logo2.png, you can use logoLight for both or just Logo.png
 import logoDark from "../assets/Logo2.png"; 
 
 // Minimal SVG Icon for Theme Toggle
@@ -19,6 +22,7 @@ const ThemeIcon = () => (
 );
 
 const Home = () => {
+  const navigate = useNavigate(); // Added Hook
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
@@ -29,7 +33,6 @@ const Home = () => {
     });
   }, []);
 
-  // Toggle theme and update body attribute
   const toggleDarkMode = () => {
     const nextMode = !isDarkMode;
     setIsDarkMode(nextMode);
@@ -58,8 +61,10 @@ const Home = () => {
         </nav>
 
         <div className="nav-actions">
-          {/* Removed Login Button as requested previously */}
-          <button className="btn-primary">Sign Up</button>
+          {/* Added Login Button back */}
+          <button className="btn-outline" onClick={() => navigate('/login')}>Login</button>
+          {/* Fixed onClick handler */}
+          <button className="btn-primary" onClick={() => navigate('/signup')}>Sign Up</button>
           <button className="theme-toggle" onClick={toggleDarkMode}>
             <ThemeIcon />
           </button>
@@ -150,14 +155,60 @@ const Home = () => {
             </div>
           </div>
         </div>
+      </section>  
+
+      {/* ================= AUDIENCE SECTION ================= */}
+      <section className="audience">
+        <h2 data-aos="fade-up">Built for Everyone at Work & Education</h2>
+
+        <div className="audience-grid">
+          {/* Students */}
+          <div className="audience-card" data-aos="fade-up" data-aos-delay="100">
+            <img src={studentsImg} alt="Students" />
+            <h3>🎓 Students</h3>
+            <p>
+              Track assignments, collaborate on projects, and submit work easily
+              in a structured digital workspace.
+            </p>
+          </div>
+
+          {/* Teachers */}
+          <div className="audience-card" data-aos="fade-up" data-aos-delay="200">
+            <img src={teachersImg} alt="Teachers" />
+            <h3>👩‍🏫 Teachers</h3>
+            <p>
+              Assign tasks, review submissions, and communicate with students
+              efficiently in one place.
+            </p>
+          </div>
+
+          {/* Offices & Teams */}
+          <div className="audience-card" data-aos="fade-up" data-aos-delay="300">
+            <img src={teamsImg} alt="Teams" />
+            <h3>🏢 Offices & Teams</h3>
+            <p>
+              Organize workflows, meetings, and documents with seamless
+              collaboration tools.
+            </p>
+          </div>
+
+          {/* Admins */}
+          <div className="audience-card text-only" data-aos="fade-up" data-aos-delay="400">
+            <h3>👨‍💼 Admins & Managers</h3>
+            <p>
+              Monitor progress, manage users, control access, and ensure smooth
+              operations across the platform.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* ================= CTA ================= */}
       <section className="cta">
         <h2>Ready to simplify your work with WorkNest?</h2>
         <div className="cta-actions">
-          <button className="btn-primary">Create Account</button>
-          <button className="btn-outline btn-cta-outline">Login</button>
+          <button className="btn-primary" onClick={() => navigate('/signup')}>Create Account</button>
+          <button className="btn-outline btn-cta-outline" onClick={() => navigate('/login')}>Login</button>
         </div>
       </section>
 
